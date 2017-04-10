@@ -81,7 +81,7 @@
 </template>
 
 <script>
-  import util from '../../common/util'
+  import util from '../../assets/js/util'
   import NProgress from 'nprogress'
   import {getUserListPage, removeUser, editUser, addUser} from '../../api/api';
 

@@ -2,7 +2,7 @@
 	<el-row class="panel">
 		<el-col :span="24" class="panel-top">
 			<el-col :span="20" style="font-size:26px;">
-				<img src="../assets/logo4.png" class="logo">
+        <i class="logo iconfont icon-computer"></i>
 				大型仪器外借管理系统
 			</el-col>
 			<el-col :span="4" class="rightbar">
@@ -17,39 +17,39 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24" class="panel-center">
-			<!--<el-col :span="4">-->
 			<aside style="width:180px;">
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
 					theme="dark" unique-opened router>
 					<template v-for="(item, index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-							<el-menu-item v-for="child in item.children" :index="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+							<el-menu-item
+                v-for="(child, index) in item.children"
+                :index="child.path"
+                v-if="!child.hidden"
+                :key="index">{{child.name}}</el-menu-item>
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
 					</el-menu>
 			</aside>
-			<!--</el-col>-->
-			<!--<el-col :span="20" class="panel-c-c">-->
 			<section class="panel-c-c">
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" style="margin-bottom:15px;">
 						<strong style="width:200px;float:left;color: #475669;">{{$route.name}}</strong>
 						<el-breadcrumb separator="/" style="float:right;">
-							<el-breadcrumb-item v-for="item in $route.matched">
+							<el-breadcrumb-item
+                v-for="(item, index) in $route.matched"
+                :key="index">
 								{{ item.name }}
 							</el-breadcrumb-item>
 						</el-breadcrumb>
 					</el-col>
 					<el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
-						<!--<transition name="fade">-->
 						<router-view></router-view>
-						<!--</transition>-->
 					</el-col>
 				</div>
 			</section>
-			<!--</el-col>-->
 		</el-col>
 	</el-row>
 </template>
@@ -112,16 +112,6 @@
 </script>
 
 <style scoped>
-	.fade-enter-active,
-	.fade-leave-active {
-		transition: opacity .5s
-	}
-
-	.fade-enter,
-	.fade-leave-active {
-		opacity: 0
-	}
-
 	.panel {
 		position: absolute;
 		top: 0px;
@@ -168,32 +158,13 @@
 		padding: 20px;
 	}
 
-	.logout {
-		background: url(../assets/logout_36.png);
-		background-size: contain;
-		width: 20px;
-		height: 20px;
-		float: left;
-	}
-
 	.logo {
-		width: 40px;
-		float: left;
-		margin: 10px 10px 10px 18px;
+    font-size: 36px;
+		margin: 10px 10px 10px 12px;
 	}
 
-	.tip-logout {
-		float: right;
-		margin-right: 20px;
-		padding-top: 5px;
-	}
-
-	.tip-logout i {
-		cursor: pointer;
-	}
-
-	.admin {
-		color: #c0ccda;
-		text-align: center;
-	}
+  .iconfont {
+    margin-right: 5px;
+    font-weight: bold;
+  }
 </style>

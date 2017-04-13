@@ -10,34 +10,31 @@
     </el-form-item>
     <el-checkbox v-model="checked" checked style="margin:0px 0px 35px 0px;">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录
-      </el-button>
-      <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
+      <el-button type="primary" style="width:100%;"
+                 @click.native.prevent="handleSubmit2"
+                 :loading="logining">登录</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-  import ajax from '@/assets/js/ajax'
-  import {requestLogin} from '../api/api';
-  import NProgress from 'nprogress'
+  import ajax from '@/assets/js/ajax';
+  import NProgress from 'nprogress';
 
   export default {
     data() {
       return {
         logining: false,
         ruleForm2: {
-          account: '',
-          checkPass: ''
+          account: 'admin',
+          checkPass: '123456'
         },
         rules2: {
           account: [
             {required: true, message: '请输入账号', trigger: 'blur'},
-            //{ validator: validaePass }
           ],
           checkPass: [
             {required: true, message: '请输入密码', trigger: 'blur'},
-            //{ validator: validaePass2 }
           ]
         },
         checked: true
@@ -45,47 +42,22 @@
     },
     methods: {
       handleSubmit2(ev) {
-        var _this = this;
+        let _this = this;
         this.$refs.ruleForm2.validate((valid) => {
-          debugger;
           if (valid) {
-            //_this.$router.replace('/table');
             this.logining = true;
             NProgress.start();
-            var loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
-
-            ajax({
-              url: '/ajaxhandler.ashx',
-              data: {
-                mode: 'login',
-                data: loginParams
+            let loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
+            this.$store.dispatch('login', {
+              data: loginParams
+            }).then(res => {
+              this.logining = false;
+              NProgress.done();
+              if (res.code === 0) {
+                this.logining = false;
+                this.$router.push({name: '用户组别'});
               }
-            }).then(data => {
-              console.log(3333333333);
-              console.log(data);
-              this.logining = false;
-              sessionStorage.setItem('user', JSON.stringify(data.data));
-              this.$router.push({name: '用户管理'});
-            }).catch(error => {
-              this.logining = false;
-              console.log(4444444444);
-              console.log(error);
             })
-//            requestLogin(loginParams).then(data => {
-//              this.logining = false;
-//              NProgress.done();
-//              let {msg, code, user} = data;
-//              if (code !== 200) {
-//                this.$notify({
-//                  title: '错误',
-//                  message: msg,
-//                  type: 'error'
-//                });
-//              } else {
-//                sessionStorage.setItem('user', JSON.stringify(user));
-//                this.$router.push({name: '用户管理'});
-//              }
-//            });
           } else {
             console.log('error submit!!');
             return false;
@@ -94,7 +66,7 @@
       }
     },
     mounted () {
-
+      this.handleSubmit2(); // TODO 自动登录
     }
   }
 </script>

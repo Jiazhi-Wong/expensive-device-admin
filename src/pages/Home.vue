@@ -5,6 +5,7 @@
         <i class="logo iconfont icon-computer"></i>
 				大型仪器外借管理系统
 			</el-col>
+
 			<el-col :span="4" class="rightbar">
 				<el-dropdown trigger="click">
 					<span class="el-dropdown-link" style="color:#c0ccda;cursor: pointer;">{{sysUserName}}</span>
@@ -37,13 +38,13 @@
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" style="margin-bottom:15px;">
 						<strong style="width:200px;float:left;color: #475669;">{{$route.name}}</strong>
-						<el-breadcrumb separator="/" style="float:right;">
-							<el-breadcrumb-item
-                v-for="(item, index) in $route.matched"
-                :key="index">
-								{{ item.name }}
-							</el-breadcrumb-item>
-						</el-breadcrumb>
+						<!--<el-breadcrumb separator="/" style="float:right;">-->
+							<!--<el-breadcrumb-item-->
+                <!--v-for="(item, index) in $route.matched"-->
+                <!--:key="index">-->
+								<!--{{ item.name }}-->
+							<!--</el-breadcrumb-item>-->
+						<!--</el-breadcrumb>-->
 					</el-col>
 					<el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
 						<router-view></router-view>
@@ -58,18 +59,7 @@
 	export default {
 		data() {
 			return {
-				sysUserName: '',
-				sysUserAvatar: '',
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				}
+				sysUserName: ''
 			}
 		},
 		methods: {
@@ -86,26 +76,24 @@
 			},
 			//退出登录
 			logout: function () {
-				var _this = this;
+				let _this = this;
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					sessionStorage.removeItem('user');
+          _this.$store.dispatch('signOut');
 					_this.$router.push('/login');
 				}).catch(() => {
 
 				});
-
-
 			}
 		},
 		mounted() {
-			var user = sessionStorage.getItem('user');
+			let user = this.$store.state.user.userData;
 			if (user) {
-				user = JSON.parse(user);
-				this.sysUserName = user.name || '';
-				this.sysUserAvatar = user.avatar || '';
+				this.sysUserName = user.username || '';
 			}
+
+			this.$store.dispatch('getInitialInfo'); // 获取初始化数据
 		}
 	}
 

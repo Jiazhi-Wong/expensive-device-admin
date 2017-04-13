@@ -1,4 +1,12 @@
-import {LoginUsers} from './mockdata/user'
+const LoginUsers = [
+  {
+    uid: 1,
+    username: 'admin',
+    password: '123456',
+    role: 1,
+    authority: [1, 4],
+  },
+];
 
 export default function (data) {
   let isRegister = false;
@@ -7,7 +15,8 @@ export default function (data) {
     if (user.username === data.username) {
       isRegister = true;
       if (user.password === data.password) {
-        return {code: 0, msg: '登录成功', data: user}
+        let {uid, username, role, authority} = user;
+        return {code: 0, msg: '登录成功', data: {uid, username, role, authority}}
       } else {
         return {code: -1, msg: '用户名和密码不正确'}
       }

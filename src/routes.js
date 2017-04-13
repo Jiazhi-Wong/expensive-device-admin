@@ -48,5 +48,5 @@ let routes = [
 ];
 
 export default new Router({
-  routes
+  routes,
 });

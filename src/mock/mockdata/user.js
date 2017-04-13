@@ -1,21 +1,18 @@
 import Mock from 'mockjs';
-const LoginUsers = [
-  {
-    id: 1,
-    username: 'admin',
-    password: '123456',
-    avatar: 'https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png',
-    name: '系统管理员'
-  }
-];
 
 const Users = [];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 50; i++) {
   Users.push(Mock.mock({
-    id: '2017-' + Mock.Random.date('MM-dd') + '-' + Mock.mock({
-      'random': /\d{3}/
-    }).random,
+    id: Mock.mock({
+      'wxId': /\d{5}/
+    }).wxId * 1,
+    wxId: Mock.mock({
+      'wxId': /\d{8}/
+    }).wxId,
+    number: Mock.mock({
+      'number': /3113\d{6}/
+    }).number,
     name: Mock.Random.cname(),
     // addr: Mock.mock('@county(true)'),
     // 'age|18-60': 1,
@@ -25,21 +22,22 @@ for (let i = 0; i < 10; i++) {
     }).regexp,
     email: Mock.Random.email(),
     authority: Mock.mock({
-      "authority|1": [
-        "领导审核权",
-        "管理员审核权",
-        "全局浏览",
-        "归属浏览"
-      ]
+      authorityArr: [1,2,3],
+      authority: function () {
+        return this.authorityArr.filter(() => Math.random() > 0.5);
+      }
     }).authority,
+    authorityRange: Mock.mock({
+      "boolean|1": true
+    }).boolean,
     role: Mock.mock({
-      "role|1": [
-        "管理员",
-        "借用人"
-      ]
+      "role|1": [1, 2]
     }).role,
+    group: Mock.mock({
+      "group|1": [1, 2, 3]
+    }).group,
     // sex: Mock.Random.integer(0, 1)
   }));
 }
 
-export {LoginUsers, Users};
+export {Users};

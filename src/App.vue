@@ -1,8 +1,6 @@
 <template>
 	<div id="app">
-		<!--<transition name="bounce">-->
 		<router-view></router-view>
-		<!--</transition>-->
 	</div>
 </template>
 
@@ -17,39 +15,6 @@
 
 <style>
 	@import "./assets/iconfont/iconfont.css";
-	.bounce-enter-active {
-		animation: bounce-in .5s;
-	}
-
-	.bounce-leave-active {
-		animation: bounce-out .2s;
-	}
-
-	@keyframes bounce-in {
-		0% {
-			transform: scale(0);
-		}
-		50% {
-			transform: scale(1.05);
-		}
-		100% {
-			transform: scale(1);
-		}
-	}
-
-	@keyframes bounce-out {
-		0% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(0.95);
-		}
-		100% {
-			transform: scale(0);
-		}
-	}
-
-
 
 	.fade-enter-active, .fade-leave-active {
 		transition: opacity .5s
@@ -97,4 +62,35 @@
 		background: #fff;
 		padding: 10px 10px 0px 10px;
 	}
+
+  .credit-table-expand {
+    font-size: 0;
+  }
+  .credit-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .credit-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+  .el-table tr.bad-credit {
+    background: #ffd8d8;
+  }
+
+  .user-table-expand {
+    font-size: 0;
+  }
+
+  .user-table-expand label {
+    width: 80px;
+    color: #99a9bf;
+  }
+
+  .user-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 32%;
+  }
 </style>

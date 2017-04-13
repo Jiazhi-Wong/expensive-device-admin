@@ -3,7 +3,8 @@ import * as types from '../mutation-types'
 
 let state = {
   initialPassword: '',
-  groupOptions: []
+  groupOptions: [],
+  deviceAdministrators: []
 }
 
 let actions = {
@@ -19,6 +20,7 @@ let mutations = {
     if (res.code === 0) {
       state.initialPassword = res.data.initialPassword;
       state.groupOptions = res.data.groupOptions;
+      state.deviceAdministrators = res.data.deviceAdministrators;
     }
   }
 }

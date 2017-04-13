@@ -10,9 +10,22 @@ export default function () {
     value: 3
   }];
 
+  let deviceAdministrators = [{
+    name: '设备管理员1',
+    id: 111
+  }, {
+    name: '设备管理员2',
+    id: 222
+  }, {
+    name: '设备管理员3',
+    id: 333
+  }];
+
   let initialPassword = '12345678';
 
   return {code: 0, msg: '请求成功', data: {
-    groupOptions, initialPassword
+    groupOptions,
+    deviceAdministrators,
+    initialPassword
   }}
 }

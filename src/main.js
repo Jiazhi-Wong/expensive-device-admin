@@ -9,9 +9,9 @@ import router from './routes'
 import store from './vuex/store'
 
 import mock from '@/mock/index'
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   mock();
-}
+// }
 
 Vue.use(ElementUI)
 

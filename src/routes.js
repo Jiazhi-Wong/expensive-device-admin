@@ -9,6 +9,9 @@ import NotFound from './pages/404.vue'
 import user from './pages/user/user'
 import group from './pages/user/group'
 
+// device
+import device from './pages/device/device'
+
 Vue.use(Router)
 
 let routes = [
@@ -39,6 +42,15 @@ let routes = [
   //     {path: '/page5', component: Page5, name: '页面5'}
   //   ]
   // },
+  {
+    path: '/',
+    component: Home,
+    name: '设备',
+    iconCls: 'iconfont icon-shebei',
+    children: [
+      {path: '/device', component: device, name: '设备管理'}
+    ]
+  },
   {
     path: '*',
     name: '404',

@@ -55,7 +55,7 @@
               NProgress.done();
               if (res.code === 0) {
                 this.logining = false;
-                this.$router.push({name: '用户组别'});
+                this.$router.push({name: '用户管理'});
               }
             })
           } else {
@@ -66,7 +66,7 @@
       }
     },
     mounted () {
-      this.handleSubmit2(); // TODO 自动登录
+//      this.handleSubmit2(); // TODO 自动登录
     }
   }
 </script>

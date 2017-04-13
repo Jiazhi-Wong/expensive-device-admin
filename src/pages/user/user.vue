@@ -435,19 +435,6 @@
   }
 </script>
 
-<style>
-  .user-table-expand {
-    font-size: 0;
-  }
+<style scoped>
 
-  .user-table-expand label {
-    width: 80px;
-    color: #99a9bf;
-  }
-
-  .user-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 33%;
-  }
 </style>

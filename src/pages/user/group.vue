@@ -450,21 +450,6 @@
   }
 </script>
 
-<style>
-  .credit-table-expand {
-    font-size: 0;
-  }
-  .credit-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .credit-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 100%;
-  }
+<style scoped>
 
-  .el-table tr.bad-credit {
-    background: #ffd8d8;
-  }
 </style>

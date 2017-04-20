@@ -5,6 +5,7 @@ import getUserListPage from './getUserListPage';
 import getGroupListPage from './getGroupListPage';
 import getCreditListPage from './getCreditListPage';
 import getDeviceListPage from './getDeviceListPage';
+import getLoanListPage from './getLoanListPage';
 
 export default function () {
   Mock.mock('/ajaxhandler.ashx', function (req) {
@@ -23,7 +24,9 @@ export default function () {
         return getCreditListPage(body.data);
       } else if (body.mode === 'getDeviceListPage') {
         return getDeviceListPage(body.data);
-      } else {
+      }  else if (body.mode === 'getLoanListPage') {
+        return getLoanListPage(body.data);
+      }else {
         return {code: 0, msg: '该接口没有mock', data: {}};
       }
     }

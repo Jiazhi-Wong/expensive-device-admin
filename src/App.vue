@@ -93,4 +93,19 @@
     margin-bottom: 0;
     width: 32%;
   }
+
+  .loan-table-expand {
+     font-size: 0;
+   }
+
+  .loan-table-expand label {
+    width: 100px;
+    color: #99a9bf;
+  }
+
+  .loan-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 32%;
+  }
 </style>

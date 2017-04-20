@@ -4,7 +4,7 @@ const Users = [];
 
 for (let i = 0; i < 50; i++) {
   Users.push(Mock.mock({
-    id: Mock.mock({
+    uid: Mock.mock({
       'wxId': /\d{5}/
     }).wxId * 1,
     wxId: Mock.mock({
@@ -16,7 +16,6 @@ for (let i = 0; i < 50; i++) {
     name: Mock.Random.cname(),
     // addr: Mock.mock('@county(true)'),
     // 'age|18-60': 1,
-    birth: Mock.Random.date(),
     phone: Mock.mock({
       'regexp': /13\d{9}/
     }).regexp,
@@ -27,7 +26,7 @@ for (let i = 0; i < 50; i++) {
         return this.authorityArr.filter(() => Math.random() > 0.5);
       }
     }).authority,
-    authorityRange: Mock.mock({
+    isAllAuthorityRange: Mock.mock({
       "boolean|1": true
     }).boolean,
     role: Mock.mock({

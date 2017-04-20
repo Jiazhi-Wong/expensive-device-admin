@@ -4,7 +4,21 @@ const LoginUsers = [
     username: 'admin',
     password: '123456',
     role: 1,
-    authority: [1, 4],
+    authority: [1],
+  },
+  {
+    uid: 2,
+    username: 'admin2',
+    password: '123456',
+    role: 1,
+    authority: [2],
+  },
+  {
+    uid: 3,
+    username: 'admin3',
+    password: '123456',
+    role: 1,
+    authority: [3],
   },
 ];
 

@@ -20,7 +20,7 @@
 		<el-col :span="24" class="panel-center">
 			<aside style="width:180px;">
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
-					theme="dark" unique-opened router>
+					theme="dark" router>
 					<template v-for="(item, index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
@@ -153,6 +153,6 @@
 
   .iconfont {
     margin-right: 5px;
-    font-weight: bold;
+    /*font-weight: bold;*/
   }
 </style>

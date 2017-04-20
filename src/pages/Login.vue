@@ -66,7 +66,7 @@
       }
     },
     mounted () {
-//      this.handleSubmit2(); // TODO 自动登录
+      this.handleSubmit2(); // TODO 自动登录
     }
   }
 </script>

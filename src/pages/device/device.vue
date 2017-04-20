@@ -169,9 +169,8 @@
 
         formattedDevices = this.devices.map((item, index) => {
           for (let administrator of this.deviceAdministrators) {
-            if (administrator.id === item.administrator) {
+            if (administrator.uid === item.administrator) {
               item.formattedAdministrator = administrator.name;
-
               break;
             }
           }
@@ -179,13 +178,11 @@
           for (let status of this.statusOptions) {
             if (status.value === item.status) {
               item.formattedStatus = status.label;
-
               break;
             }
           }
 
           return item;
-
         });
 
         return formattedDevices;
@@ -196,7 +193,7 @@
         this.page = val;
         this.getDevices();
       },
-      //获取用户列表
+      //获取设备列表
       getDevices() {
         let para = {
           page: this.page,
@@ -209,9 +206,7 @@
           this.total = res.data.total;
           this.devices = res.data.devices;
           this.listLoading = false;
-        }).catch(() => {
-
-        });
+        }).catch(() => {});
       },
       //删除
       handleDel: function (row) {

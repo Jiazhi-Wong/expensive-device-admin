@@ -10,7 +10,7 @@
           <el-input v-model="filters.phone" placeholder="联系方式"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="filters.group" placeholder="请选择组别">
+          <el-select v-model="filters.group" clearable placeholder="请选择组别">
             <el-option
               v-for="item in groupOptions"
               :label="item.name"
@@ -108,6 +108,16 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="editForm.email" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="组别" prop="group">
+          <el-select v-model.number="editForm.group" placeholder="请选择组别">
+            <el-option
+              v-for="item in groupOptions"
+              :label="item.name"
+              :value="item.value"
+              :key="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="角色" prop="role">
           <el-radio-group v-model.number="editForm.role">
             <el-radio
@@ -122,34 +132,60 @@
             <el-checkbox
               v-for="item in authorityOptions"
               :label="item.value"
-              :key="item.value">{{item.label}}</el-checkbox>
+              :key="item.value">{{item.label}}
+            </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="全局权限" v-show="editForm.role === 1">
           <el-switch
-            v-model="editForm.authorityRange"
+            v-model="editForm.isAllAuthorityRange"
             on-color="#13ce66"
             off-color="#ff4949">
           </el-switch>
         </el-form-item>
-        <el-form-item label="选择设备" v-show="editForm.authorityRange === false">
-          <el-tree
-            :data="data2"
-            show-checkbox
-            node-key="id"
-            ref="tree"
-            :props="defaultProps">
-          </el-tree>
-        </el-form-item>
-        <el-form-item label="组别" prop="group">
-          <el-select v-model.number="editForm.group" placeholder="请选择组别">
-            <el-option
-              v-for="item in groupOptions"
-              :label="item.name"
-              :value="item.value"
-              :key="item.value">
-            </el-option>
-          </el-select>
+
+        <el-form-item
+          label="选择设备"
+          v-show="editForm.role === 1 && editForm.isAllAuthorityRange === false">
+          <el-col :span="24">
+            <el-tag
+              v-for="tag in selectedDevicesTags"
+              :closable="true"
+              @close="selectedDeviceClose(tag)"
+              type="primary" :key="tag.id">{{tag.deviceName}}</el-tag>
+          </el-col>
+          <el-col :span="24">
+            <el-form :inline="true" :model="deviceFilters">
+              <el-form-item>
+                <el-input v-model="deviceFilters.deviceName" placeholder="设备名" size="small"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="getPageDevices(1)" size="small">查询</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="24" style="margin: 10px 0">
+            <el-table
+              :data="formattedDevices"
+              v-loading="listLoading"
+              style="width: 100%;"
+              @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="40"></el-table-column>
+              <el-table-column prop="id" label="设备编号"></el-table-column>
+              <el-table-column prop="deviceName" label="设备名"></el-table-column>
+              <el-table-column prop="formattedAdministrator" label="设备管理员"></el-table-column>
+            </el-table>
+          </el-col>
+          <el-col :span="24">
+            <el-pagination
+              small
+              layout="prev, pager, next"
+              @current-change="getPageDevices"
+              :current-page="devicesPage"
+              :page-size="devicesPageSize"
+              :total="devicesTotal" style="float:right;">
+            </el-pagination>
+          </el-col>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -181,17 +217,17 @@
         editFormVisible: false,//编辑界面显是否显示
         editFormTtile: '编辑',//编辑界面标题
         editForm: { //编辑界面数据
-          id: 0,
+          uid: 0,
           name: '',
           number: '',
           wxId: '',
           phone: '',
           email: '',
+          group: '',
           role: '',
           authority: [],
-          authorityRange: true, // 是否可管理所有设备
+          isAllAuthorityRange: true, // 是否可管理所有设备
           devices: [], // 可管理的设备列表
-          group: ''
         },
         editFormRules: {
           name: [
@@ -229,44 +265,16 @@
           {label: '系统管理权', value: 1},
           {label: '领导审核权', value: 2},
           {label: '管理员审核权', value: 3},
-//          {label: '全局浏览', value: 4},
-//          {label: '归属浏览', value: 5}
         ],
-        data2: [{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1'
-          }, {
-            id: 4,
-            label: '二级 1-2'
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
+        deviceFilters: {
+          deviceName: ''
+        },
+        devices: [],
+        devicesTotal: 0,
+        devicesPage: 1,
+        devicesPageSize: 6,
+        devicesListLoading: false,
+        selectedDevicesTags: []
       }
     },
     computed: {
@@ -280,7 +288,6 @@
           for (let role of this.roleOptions) {
             if (role.value === item.role) {
               item.formattedRole = role.label;
-
               break;
             }
           }
@@ -290,26 +297,46 @@
             for (let authorityOption of this.authorityOptions) {
               if (authorityOption.value === authority) {
                 item.formattedAuthority.push(authorityOption.label);
-
                 break;
               }
             }
           }
 
-
           for (let group of this.groupOptions) {
             if (group.value === item.group) {
-              item.formattedGroup= group.name;
-
+              item.formattedGroup = group.name;
               break;
             }
           }
 
           return item;
-
         });
 
         return formattedUsers;
+      },
+      deviceAdministrators() {
+        return this.$store.state.base.deviceAdministrators;
+      },
+      formattedDevices() {
+        let formattedDevices = [];
+
+        formattedDevices = this.devices.map((item, index) => {
+          for (let administrator of this.deviceAdministrators) {
+            if (administrator.uid === item.administrator) {
+              item.formattedAdministrator = administrator.name;
+              break;
+            }
+          }
+
+          return item;
+        });
+
+        return formattedDevices;
+      },
+      selectedDevicesId() {
+        return this.selectedDevicesTags.map((item) => {
+          return item.id;
+        });
       }
     },
     methods: {
@@ -319,10 +346,18 @@
       },
       //获取用户列表
       getUsers() {
+        let checkedFilters = {};
+
+        for (let item in this.filters) {
+          if (this.filters.hasOwnProperty(item) && !!this.filters[item]) {
+            checkedFilters[item] = this.filters[item];
+          }
+        }
+
         let para = {
           page: this.page,
           pageSize: this.pageSize,
-          filters: this.filters
+          filters: checkedFilters
         };
 
         this.listLoading = true;
@@ -343,7 +378,7 @@
         }).then(() => {
           _this.listLoading = true;
           let para = {
-            id: row.id,
+            uid: row.uid,
           };
 
           api.delUser(para).then(res => {
@@ -367,7 +402,7 @@
       handleAdd: function () {
         this.editFormVisible = true;
         this.editFormTtile = '新增';
-        this.editForm.id = 0;
+        this.editForm.uid = 0;
         this.editForm.name = '';
         this.editForm.number = '';
         this.editForm.wxId = '';
@@ -375,14 +410,18 @@
         this.editForm.email = '';
         this.editForm.role = '';
         this.editForm.authority = [];
-        this.editForm.authorityRange = true;
+        this.editForm.isAllAuthorityRange = true;
         this.editForm.group = '';
+        this.editForm.devices = [];
+        this.selectedDevicesTags = [];
+
+        this.getPageDevices(1);
       },
       //显示编辑界面
       handleEdit: function (row) {
         this.editFormVisible = true;
         this.editFormTtile = '编辑';
-        this.editForm.id = row.id;
+        this.editForm.uid = row.uid;
         this.editForm.name = row.name;
         this.editForm.number = row.number;
         this.editForm.wxId = row.wxId;
@@ -390,8 +429,11 @@
         this.editForm.email = row.email;
         this.editForm.role = row.role;
         this.editForm.authority = row.authority;
-        this.editForm.authorityRange = row.authorityRange;
+        this.editForm.isAllAuthorityRange = row.isAllAuthorityRange;
         this.editForm.group = row.group;
+//        this.selectedDevicesTags = row.authorityDevices;
+
+        this.getPageDevices(1);
       },
       //编辑 or 新增
       editSubmit: function () {
@@ -399,10 +441,10 @@
 
         _this.$refs.editForm.validate((valid) => {
           if (valid) {
-
             _this.$confirm('确认提交吗？', '提示', {}).then(() => {
               _this.editLoading = true;
               _this.btnEditText = '提交中';
+              _this.editForm.devices = _this.selectedDevicesId;
 
               console.log(_this.editForm);
               api.updateUser(_this.editForm).then((res) => {
@@ -419,11 +461,53 @@
                   _this.getUsers();
                 }
               })
-            }).catch(() => {});
+            }).catch(() => {
+            });
 
           }
         });
 
+      },
+      getPageDevices(val) { // 获取第几页的设备
+        this.devicesPage = val;
+        this.getDevices();
+      },
+      //获取设备列表
+      getDevices() {
+        let para = {
+          page: this.devicesPage,
+          pageSize: this.devicesPageSize,
+          filters: this.deviceFilters
+        };
+
+        this.devicesListLoading = true;
+        api.getDeviceListPage(para).then((res) => {
+          this.devicesTotal = res.data.total;
+          this.devices = res.data.devices;
+          this.devicesListLoading = false;
+        }).catch((error) => {
+          console.log(error);
+        });
+      },
+      handleSelectionChange(selection) {
+        // 避免重复添加
+        let checkedSelection = selection.filter((item) => {
+          let isSelected = false;
+
+          for (let selectedItem of this.selectedDevicesTags) {
+            if (item.id === selectedItem.id) {
+              isSelected = true;
+              break;
+            }
+          }
+
+          return !isSelected;
+        });
+
+        this.selectedDevicesTags.push(...checkedSelection);
+      },
+      selectedDeviceClose(tag) {
+        this.selectedDevicesTags.splice(this.selectedDevicesTags.indexOf(tag), 1);
       },
       resetForm(formName) {
         this.$refs.editForm.resetFields();
@@ -431,6 +515,7 @@
     },
     mounted() {
       this.getUsers();
+      this.getDevices();
     }
   }
 </script>

@@ -12,13 +12,13 @@ export default function () {
 
   let deviceAdministrators = [{
     name: '设备管理员1',
-    id: 111
+    uid: 111
   }, {
     name: '设备管理员2',
-    id: 222
+    uid: 222
   }, {
     name: '设备管理员3',
-    id: 333
+    uid: 333
   }];
 
   let initialPassword = '12345678';

@@ -9,6 +9,9 @@ import NotFound from './pages/404.vue'
 import user from './pages/user/user'
 import group from './pages/user/group'
 
+// loan
+import loan from './pages/loan/loan'
+
 // device
 import device from './pages/device/device'
 
@@ -32,16 +35,15 @@ let routes = [
       {path: '/group', component: group, name: '用户组别'},
     ]
   },
-  // {
-  //   path: '/',
-  //   component: Home,
-  //   name: '借用',
-  //   iconCls: 'fa fa-id-card-o',
-  //   children: [
-  //     {path: '/page4', component: Page4, name: '页面4'},
-  //     {path: '/page5', component: Page5, name: '页面5'}
-  //   ]
-  // },
+  {
+    path: '/',
+    component: Home,
+    name: '借用',
+    iconCls: 'iconfont icon-chakanjieyongjilu',
+    children: [
+      {path: '/loan', component: loan, name: '借用记录'}
+    ]
+  },
   {
     path: '/',
     component: Home,

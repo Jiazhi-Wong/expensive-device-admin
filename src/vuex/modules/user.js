@@ -25,7 +25,7 @@ let actions = {
 
 let mutations = {
   [types.LOGIN_IN] (state, res) {
-    state.isLogin = res.code === 0;
+    state.isLogin = res.error_code === 0;
     state.userData = Object.assign(state.userData, res.data);
   },
   [types.EXIT_LOGIN] (state) {

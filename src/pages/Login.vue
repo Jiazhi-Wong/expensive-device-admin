@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import ajax from '@/assets/js/ajax';
   import NProgress from 'nprogress';
 
   export default {
@@ -53,7 +52,7 @@
             }).then(res => {
               this.logining = false;
               NProgress.done();
-              if (res.code === 0) {
+              if (res.error_code === 0) {
                 this.logining = false;
                 this.$router.push({name: '用户管理'});
               }
@@ -66,7 +65,7 @@
       }
     },
     mounted () {
-      this.handleSubmit2(); // TODO 自动登录
+//      this.handleSubmit2(); // TODO 自动登录
     }
   }
 </script>

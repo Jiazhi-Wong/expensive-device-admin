@@ -7,7 +7,7 @@ export default function (req) {
 
   let resUsers = Users.filter((u, index) => index < pageSize * page && index >= pageSize * (page - 1))
 
-  return {code: 0, msg: '请求成功', data: {
+  return {error_code: 0, msg: '请求成功', data: {
     total,
     users: resUsers
   }}

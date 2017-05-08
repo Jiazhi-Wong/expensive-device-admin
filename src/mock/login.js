@@ -30,14 +30,14 @@ export default function (data) {
       isRegister = true;
       if (user.password === data.password) {
         let {uid, username, role, authority} = user;
-        return {code: 0, msg: '登录成功', data: {uid, username, role, authority}}
+        return {error_code: 0, msg: '登录成功', data: {uid, username, role, authority}}
       } else {
-        return {code: -1, msg: '用户名和密码不正确'}
+        return {error_code: -1, msg: '用户名和密码不正确'}
       }
     }
   }
 
   if (!isRegister) {
-    return {code: -2, msg: '该用户不存在'}
+    return {error_code: -2, msg: '该用户不存在'}
   }
 }

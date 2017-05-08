@@ -191,7 +191,7 @@
         btnEditText: '提 交',
         addCreditVisible: false,
         addCreditForm: { //添加信用记录数据
-          id: 0,
+          groupId: 0,
           type: '',
           score: '',
           message: '',
@@ -250,10 +250,18 @@
       },
       //获取用户列表
       getGroups() {
+        let checkedFilters = {};
+
+        for (let item in this.filters) {
+          if (this.filters.hasOwnProperty(item) && !!this.filters[item].toString()) {
+            checkedFilters[item] = this.filters[item];
+          }
+        }
+
         let para = {
           page: this.page,
           pageSize: this.pageSize,
-          filters: this.filters
+          filters: checkedFilters
         };
 
         this.listLoading = true;
@@ -261,9 +269,7 @@
           this.total = res.data.total;
           this.groups = res.data.groups;
           this.listLoading = false;
-        }).catch(() => {
-
-        });
+        }).catch(() => {});
       },
       //删除
       handleDel: function (row) {
@@ -279,7 +285,7 @@
 
           api.delGroup(para).then(res => {
             _this.listLoading = false;
-            if (res.code === 0) {
+            if (res.error_code === 0) {
               _this.$notify({
                 title: '成功',
                 message: '删除成功',
@@ -325,7 +331,7 @@
               _this.btnEditText = '提交中';
 
               api.updateGroup(_this.editForm).then((res) => {
-                if (res.code === 0) {
+                if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
                     message: '提交成功',
@@ -348,7 +354,7 @@
       // 添加新信用记录
       showCreditBox: function (row) {
         this.addCreditVisible = true;
-        this.addCreditForm.id = row.id;
+        this.addCreditForm.groupId = row.id;
         this.addCreditForm.type = '';
         this.addCreditForm.score = '';
         this.addCreditForm.message = '';
@@ -363,7 +369,7 @@
               _this.btnAddCreditText = '提交中';
 
               api.addCredit(_this.addCreditForm).then((res) => {
-                if (res.code === 0) {
+                if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
                     message: '添加成功',
@@ -399,6 +405,8 @@
 
         this.creditListLoading = true;
         api.getCreditListPage(para).then((res) => {
+            console.log(2222222);
+            console.log(res.data);
           this.creditListTotal = res.data.total;
           this.creditList = res.data.creditList;
           this.creditListLoading = false;
@@ -418,7 +426,7 @@
 
           api.delCredit(para).then(res => {
             _this.creditListLoading = false;
-            if (res.code === 0) {
+            if (res.error_code === 0) {
               _this.$notify({
                 title: '成功',
                 message: '删除成功',

@@ -44,7 +44,7 @@ function ajax({method, url, data, successMsg}) {
   return axios(args)
     .then(function (response) {
       return new Promise((resolve, reject) => {
-        if (response.data.code === 0) {
+        if (response.data.error_code === 0) {
           if (!!successMsg) {
             vm.$notify({
               title: '成功',

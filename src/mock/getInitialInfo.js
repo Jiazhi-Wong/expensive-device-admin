@@ -1,13 +1,13 @@
 export default function () {
   let groupOptions = [{
-    name: '组别1',
-    value: 1
+    groupName: '组别1',
+    id: 1
   }, {
-    name: '组别2',
-    value: 2
+    groupName: '组别2',
+    id: 2
   }, {
-    name: '组别3',
-    value: 3
+    groupName: '组别3',
+    id: 3
   }];
 
   let deviceAdministrators = [{
@@ -23,7 +23,7 @@ export default function () {
 
   let initialPassword = '12345678';
 
-  return {code: 0, msg: '请求成功', data: {
+  return {error_code: 0, msg: '请求成功', data: {
     groupOptions,
     deviceAdministrators,
     initialPassword

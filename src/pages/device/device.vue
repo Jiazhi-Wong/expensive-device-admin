@@ -4,7 +4,7 @@
     <el-col :span="24" class="toolbar">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.id" placeholder="设备编号"></el-input>
+          <el-input v-model.number="filters.id" placeholder="设备编号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-input v-model="filters.deviceName" placeholder="设备名"></el-input>
@@ -23,7 +23,7 @@
             <el-option
               v-for="item in deviceAdministrators"
               :label="item.name"
-              :value="item.id" :key="item.id">
+              :value="item.uid" :key="item.uid">
             </el-option>
           </el-select>
         </el-form-item>
@@ -79,7 +79,7 @@
             <el-option
               v-for="item in deviceAdministrators"
               :label="item.name"
-              :value="item.id" :key="item.id">
+              :value="item.uid" :key="item.uid">
             </el-option>
           </el-select>
         </el-form-item>
@@ -195,10 +195,18 @@
       },
       //获取设备列表
       getDevices() {
+        let checkedFilters = {};
+
+        for (let item in this.filters) {
+          if (this.filters.hasOwnProperty(item) && !!this.filters[item].toString()) {
+            checkedFilters[item] = this.filters[item];
+          }
+        }
+
         let para = {
           page: this.page,
           pageSize: this.pageSize,
-          filters: this.filters
+          filters: checkedFilters
         };
 
         this.listLoading = true;
@@ -221,7 +229,7 @@
 
           api.delDevice(para).then(res => {
             _this.listLoading = false;
-            if (res.code === 0) {
+            if (res.error_code === 0) {
               _this.$notify({
                 title: '成功',
                 message: '删除成功',
@@ -269,7 +277,7 @@
               _this.btnEditText = '提交中';
 
               api.updateDevice(_this.editForm).then((res) => {
-                if (res.code === 0) {
+                if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
                     message: '提交成功',

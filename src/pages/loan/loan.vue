@@ -7,6 +7,9 @@
           <el-input v-model="filters.loanId" placeholder="借用编号"></el-input>
         </el-form-item>
         <el-form-item>
+          <el-input v-model="filters.device" placeholder="借用设备"></el-input>
+        </el-form-item>
+        <el-form-item>
           <el-input v-model="filters.loaner" placeholder="借用人"></el-input>
         </el-form-item>
         <el-form-item>
@@ -16,13 +19,13 @@
           <el-select v-model="filters.group" placeholder="请选择组别">
             <el-option
               v-for="item in groupOptions"
-              :label="item.name"
-              :value="item.value" :key="item.value">
+              :label="item.groupName"
+              :value="item.id" :key="item.id">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="filters.status" placeholder="请选择状态">
+          <el-select v-model="filters.status" multiple placeholder="请选择状态" style="width: 398px">
             <el-option
               v-for="item in statusOptions"
               :label="item.label"
@@ -169,7 +172,7 @@
           loaner: '',
           phone: '',
           group: '',
-          status: '',
+          status: [],
         },
         loanList: [],
         total: 0,
@@ -237,14 +240,27 @@
       },
       //获取借用记录列表
       getLoans() {
+        let checkedFilters = {};
+
+        for (let item in this.filters) {
+          if (this.filters.hasOwnProperty(item) && !!this.filters[item].toString()) {
+            checkedFilters[item] = this.filters[item];
+          }
+        }
+
         let para = {
           page: this.page,
           pageSize: this.pageSize,
-          filters: this.filters
+          filters: checkedFilters
         };
+
+        console.log(1111);
+        console.log(para);
 
         this.listLoading = true;
         api.getLoanListPage(para).then((res) => {
+          console.log(2222);
+          console.log(res.data);
           this.total = res.data.total;
           this.loanList = res.data.loanList;
           this.listLoading = false;
@@ -266,7 +282,7 @@
 
             api.handleAdminExamine(para).then(res => {
               this.listLoading = false;
-              if (res.code === 0) {
+              if (res.error_code === 0) {
                 this.$notify({
                   title: '成功',
                   message: '审核通过',
@@ -290,7 +306,7 @@
 
             api.handleAdminExamine(para).then(res => {
               this.listLoading = false;
-              if (res.code === 0) {
+              if (res.error_code === 0) {
                 this.$notify({
                   title: '成功',
                   message: '审核不通过',
@@ -318,7 +334,7 @@
 
             api.handleLeaderExamine(para).then(res => {
               this.listLoading = false;
-              if (res.code === 0) {
+              if (res.error_code === 0) {
                 this.$notify({
                   title: '成功',
                   message: '审核通过',
@@ -342,7 +358,7 @@
 
             api.handleLeaderExamine(para).then(res => {
               this.listLoading = false;
-              if (res.code === 0) {
+              if (res.error_code === 0) {
                 this.$notify({
                   title: '成功',
                   message: '审核不通过',
@@ -374,7 +390,7 @@
               _this.btnAddCreditText = '提交中';
 
               api.addCredit(_this.addCreditForm).then((res) => {
-                if (res.code === 0) {
+                if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
                     message: '添加成功',

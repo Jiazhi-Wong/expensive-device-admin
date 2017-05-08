@@ -17,7 +17,7 @@ let actions = {
 
 let mutations = {
   [types.GET_INITIAL] (state, res) {
-    if (res.code === 0) {
+    if (res.error_code === 0) {
       state.initialPassword = res.data.initialPassword;
       state.groupOptions = res.data.groupOptions;
       state.deviceAdministrators = res.data.deviceAdministrators;

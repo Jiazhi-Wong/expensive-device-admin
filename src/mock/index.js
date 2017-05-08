@@ -27,7 +27,7 @@ export default function () {
       }  else if (body.mode === 'getLoanListPage') {
         return getLoanListPage(body.data);
       }else {
-        return {code: 0, msg: '该接口没有mock', data: {}};
+        return {error_code: 0, msg: '该接口没有mock', data: {}};
       }
     }
   })

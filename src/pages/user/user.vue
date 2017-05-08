@@ -13,8 +13,8 @@
           <el-select v-model="filters.group" clearable placeholder="请选择组别">
             <el-option
               v-for="item in groupOptions"
-              :label="item.name"
-              :value="item.value" :key="item.value">
+              :label="item.groupName"
+              :value="item.id" :key="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -112,9 +112,9 @@
           <el-select v-model.number="editForm.group" placeholder="请选择组别">
             <el-option
               v-for="item in groupOptions"
-              :label="item.name"
-              :value="item.value"
-              :key="item.value">
+              :label="item.groupName"
+              :value="item.id"
+              :key="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -303,8 +303,8 @@
           }
 
           for (let group of this.groupOptions) {
-            if (group.value === item.group) {
-              item.formattedGroup = group.name;
+            if (group.id === item.group) {
+              item.formattedGroup = group.groupName;
               break;
             }
           }
@@ -349,7 +349,7 @@
         let checkedFilters = {};
 
         for (let item in this.filters) {
-          if (this.filters.hasOwnProperty(item) && !!this.filters[item]) {
+          if (this.filters.hasOwnProperty(item) && !!this.filters[item].toString()) {
             checkedFilters[item] = this.filters[item];
           }
         }
@@ -383,7 +383,7 @@
 
           api.delUser(para).then(res => {
             _this.listLoading = false;
-            if (res.code === 0) {
+            if (res.error_code === 0) {
               _this.$notify({
                 title: '成功',
                 message: '删除成功',
@@ -448,7 +448,7 @@
 
               console.log(_this.editForm);
               api.updateUser(_this.editForm).then((res) => {
-                if (res.code === 0) {
+                if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
                     message: '提交成功',

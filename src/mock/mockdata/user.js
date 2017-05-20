@@ -1,8 +1,8 @@
 import Mock from 'mockjs';
 
-const Users = [];
+let Users = [];
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 5; i++) {
   Users.push(Mock.mock({
     uid: Mock.mock({
       'wxId': /\d{5}/
@@ -38,5 +38,12 @@ for (let i = 0; i < 50; i++) {
     // sex: Mock.Random.integer(0, 1)
   }));
 }
+
+// Users = [
+//   {
+//     uid: 10001,
+//     wxId:
+//   }
+// ]
 
 export {Users};

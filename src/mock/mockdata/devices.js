@@ -2,7 +2,7 @@ import Mock from 'mockjs';
 
 const Devices = [];
 
-for (let i = 0; i < 35; i++) {
+for (let i = 0; i < 0; i++) {
   Devices.push(Mock.mock({
     id: Mock.mock({
       'id': /\d{5}/

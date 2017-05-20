@@ -2,9 +2,11 @@ import Mock from 'mockjs';
 import login from './login';
 import getInitialInfo from './getInitialInfo';
 import getUserListPage from './getUserListPage';
+import updateUser from './updateUser';
 import getGroupListPage from './getGroupListPage';
 import getCreditListPage from './getCreditListPage';
 import getDeviceListPage from './getDeviceListPage';
+import updateDevice from './updateDevice';
 import getLoanListPage from './getLoanListPage';
 
 export default function () {
@@ -18,13 +20,17 @@ export default function () {
         return getInitialInfo();
       } else if (body.mode === 'getUserListPage') {
         return getUserListPage(body.data);
+      } else if (body.mode === 'updateUser') {
+        return updateUser(body.data);
       } else if (body.mode === 'getGroupListPage') {
         return getGroupListPage(body.data);
       } else if (body.mode === 'getCreditListPage') {
         return getCreditListPage(body.data);
       } else if (body.mode === 'getDeviceListPage') {
         return getDeviceListPage(body.data);
-      }  else if (body.mode === 'getLoanListPage') {
+      } else if (body.mode === 'updateDevice') {
+        return updateDevice(body.data);
+      } else if (body.mode === 'getLoanListPage') {
         return getLoanListPage(body.data);
       }else {
         return {error_code: 0, msg: '该接口没有mock', data: {}};

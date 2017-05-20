@@ -248,9 +248,9 @@
           role: [
             {required: true, type: 'number', message: '请选择用户角色', trigger: 'change'}
           ],
-          authority: [
-            {required: true, type: 'array', message: '请选择权限', trigger: 'change'}
-          ],
+//          authority: [
+//            {required: true, type: 'array', message: '请选择权限', trigger: 'change'}
+//          ],
           group: [
             {required: true, type: 'number', message: '请选择组别', trigger: 'change'},
           ]
@@ -264,7 +264,7 @@
         authorityOptions: [
           {label: '系统管理权', value: 1},
           {label: '领导审核权', value: 2},
-          {label: '管理员审核权', value: 3},
+          {label: '设备管理权', value: 3},
         ],
         deviceFilters: {
           deviceName: ''
@@ -451,7 +451,7 @@
                 if (res.error_code === 0) {
                   _this.$notify({
                     title: '成功',
-                    message: '提交成功',
+                    message: _this.editFormTtile + '成功',
                     type: 'success'
                   });
                   _this.editLoading = false;
